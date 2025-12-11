@@ -119,7 +119,6 @@ function App() {
       setUserLocation(location);
     } catch (error) {
       setError(error.message);
-      console.error('Failed to get location:', error);
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +162,6 @@ function App() {
       userStatsService.recordSearch(searchParams);
     } catch (error) {
       setError(error.message);
-      console.error('Search failed:', error);
     } finally {
       setIsLoading(false);
     }
@@ -191,12 +189,6 @@ function App() {
         return place;
       });
 
-      console.log('🔍 Text search places before AI processing:', placesWithDistance.map(p => ({
-        name: p.name,
-        types: p.types,
-        place_id: p.place_id
-      })));
-      
       const aiRecommendations = await aiRecommendationService.getRecommendations(
         placesWithDistance,
         searchParams.location,
@@ -205,13 +197,6 @@ function App() {
           distance: searchParams.radius
         }
       );
-      
-      console.log('🤖 Text search AI recommendations:', aiRecommendations.map(p => ({
-        name: p.name,
-        place_id: p.place_id,
-        restaurantType: p.restaurantType
-      })));
-
 
       const contextualRecommendations = aiRecommendationService.getContextualRecommendations(
         aiRecommendations,
@@ -229,14 +214,12 @@ function App() {
       userStatsService.recordSearch(searchParams);
     } catch (error) {
       setError(error.message);
-      console.error('Text search failed:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSelectPlace = async (place) => {
-    console.log('handleSelectPlace called with:', place);
     setIsLoading(true);
     try {
 
@@ -250,8 +233,7 @@ function App() {
       setSelectedPlace(placeWithDetails);
       setShowPlaceDetail(true);
       userStatsService.recordPlaceView(place);
-    } catch (error) {
-      console.error('Failed to get place details:', error);
+    } catch {
       setSelectedPlace(place);
       setShowPlaceDetail(true);
       userStatsService.recordPlaceView(place);
@@ -270,16 +252,15 @@ function App() {
         menu: menu
       };
       setSelectedRestaurantForAI(restaurantWithMenu);
-    } catch (error) {
-      console.error('Failed to load menu:', error);
+    } catch {
+      // Menu loading failed, continue with basic restaurant info
     }
     
     setShowAIChat(true);
   };
 
-  const handleRestaurantAnalysis = (restaurant, analysis) => {
-    console.log('Restaurant analysis completed:', restaurant.name, analysis);
-
+  const handleRestaurantAnalysis = () => {
+    // Restaurant analysis callback - can be extended for future features
   };
 
   const handleFavorite = (place) => {
@@ -296,10 +277,8 @@ function App() {
   };
 
   useEffect(() => {
-    const envStatus = checkEnvironmentVariables();
-    if (!envStatus.isConfigured) {
-      console.warn('⚠️ Environment variables are not correctly set:', envStatus.missing);
-    }
+    // Validate environment configuration on startup
+    checkEnvironmentVariables();
     
     // If not logged in, automatically show login interface
     if (!isAuthenticated) {

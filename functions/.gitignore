@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Environment variables (IMPORTANT: Never commit API keys!)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime data
+*.pid
+*.seed
+
+# Firebase cache
+.firebase/
+
+# IDE
+.vscode/
+.idea/

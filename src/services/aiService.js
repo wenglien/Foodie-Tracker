@@ -1,3 +1,5 @@
+import logger from '../utils/logger';
+
 class AIService {
   constructor() {
     this.isProduction = process.env.NODE_ENV === 'production';
@@ -10,7 +12,7 @@ class AIService {
     this.conversationHistory = [];
     this.maxHistoryLength = 15; // maximum conversation history length
     
-    console.log('AI Service Initialized:', {
+    logger.log('AI Service Initialized:', {
       isProduction: this.isProduction,
       isVercel: this.isVercel,
       isFirebase: this.isFirebase,
@@ -75,7 +77,7 @@ class AIService {
       
       return response;
     } catch (error) {
-      console.error('AI Service Error:', error);
+      logger.error('AI Service Error:', error);
       throw new Error('Failed to get AI response');
     }
   }
@@ -209,8 +211,8 @@ ${context}
    */
   async callViaProxy(messages) {
     try {
-      console.log('🔄 Using API proxy to call AI service');
-      console.log('📝 Sending messages:', messages.length, 'messages');
+      logger.log('🔄 Using API proxy to call AI service');
+      logger.log('📝 Sending messages:', messages.length, 'messages');
       
       const response = await fetch('/api/ai-proxy', {
         method: 'POST',
@@ -237,7 +239,7 @@ ${context}
       const data = await response.json();
       return data.response;
     } catch (error) {
-      console.error('AI Proxy Error:', error);
+      logger.error('AI Proxy Error:', error);
       return `AI service temporarily unavailable: ${error.message}`;
     }
   }
@@ -248,8 +250,8 @@ ${context}
    */
   async callViaExternalProxy(messages) {
     try {
-      console.log(' Using External API proxy to call AI service', this.proxyUrl);
-      console.log(' Sending messages:', messages.length, 'messages');
+      logger.log('🔄 Using External API proxy to call AI service', this.proxyUrl);
+      logger.log('📝 Sending messages:', messages.length, 'messages');
       
       const response = await fetch(this.proxyUrl, {
         method: 'POST',
@@ -275,7 +277,7 @@ ${context}
       const data = await response.json();
       return data.response || data.result || '';
     } catch (error) {
-      console.error('External AI Proxy Error:', error);
+      logger.error('External AI Proxy Error:', error);
       return `AI service temporarily unavailable: ${error.message}`;
     }
   }
@@ -289,7 +291,7 @@ ${context}
       const testResponse = await this.getAIResponse('Hello', [], null);
       return testResponse !== null;
     } catch (error) {
-      console.error('AI Service not available:', error);
+      logger.error('AI Service not available:', error);
       return false;
     }
   }

@@ -46,35 +46,6 @@ An AI-powered restaurant and cafe recommender built with React. It integrates th
 - Google Maps API Key (Places, Maps JavaScript)
 - Firebase Account (for deployment and authentication)
 
-## Quick Start
-
-### 1. Install dependencies
-
-```bash
-npm install
-cd functions && npm install && cd ..
-```
-
-### 2. Create environment variables
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` and set:
-
-```
-REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-```
-
-### 3. Start the dev server
-
-```bash
-npm start
-```
-
-The app opens at `http://localhost:3000`.
-
 ## How to Use
 
 1. **Select Language** - Choose English or 繁體中文 on first visit
@@ -282,6 +253,15 @@ The app includes a gamified user experience with:
 - Translation requires AI API access
 - Firebase Authentication requires network connectivity
 
+## Security
+
+This project follows security best practices:
+
+- **Environment Variables**: All sensitive API keys are stored in `.env` files (not committed to git)
+- **Firebase Security**: Firebase configuration in the frontend is public by design; security is enforced through Firebase Security Rules
+- **API Proxy**: AI API calls are proxied through Firebase Functions to protect the Groq API key
+- **No Hardcoded Secrets**: Use `.env.example` templates to set up your own API keys
+
 ## License
 
-MIT License
+MIT License - see the [LICENSE](LICENSE) file for details

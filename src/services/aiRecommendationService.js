@@ -1,3 +1,5 @@
+import logger from '../utils/logger';
+
 class AIRecommendationService {
   constructor() {
     this.userPreferences = {
@@ -64,11 +66,9 @@ class AIRecommendationService {
     const types = place.types.map(t => t.toLowerCase());
     const name = (place.name || '').toLowerCase();
     
-    console.log('🔍 Restaurant type detection:', {
+    logger.debug('Restaurant type detection:', {
       name: place.name,
-      types: place.types,
-      name_lower: name,
-      types_lower: types
+      types: place.types
     });
     
     
@@ -175,9 +175,7 @@ class AIRecommendationService {
       return 'american';
     }
     
-    const result = 'american'; 
-    console.log('🎯 Final restaurant type result:', result);
-    return result;
+    return 'american';
   }
 
   calculateRecommendationScore(place, userLocation, preferences) {
